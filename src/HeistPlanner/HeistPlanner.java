@@ -1,5 +1,13 @@
 package HeistPlanner;
 
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Scanner;
+
+import agents.*;
+import persistance.SaveData;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Scanner;
@@ -10,6 +18,7 @@ import tools.*;
 public class HeistPlanner {
     Scanner sc = new Scanner(System.in);
     public static HashMap<Agent, Tools> characterList = new HashMap<>();
+    public Agent createCharacter(Agent a1) throws IOException {
     public Agent createCharacter(Agent a1){
         int charClass;
         String name;
@@ -45,10 +54,17 @@ public class HeistPlanner {
             else t1 = new Protien();
             t1.assignTools(a1);
             characterList.put(a1, t1);
+            SaveData data = new SaveData(name, charClass, toolChoice);
+            data.save();
             break;
         }
         return a1;
     }
+    public void deleteCharacter(Agent a1) throws IOException {
+        characterList.remove(a1);
+        SaveData.delete(a1.getAgentName());
+    }
+    public void editCharacter(Agent a1) throws IOException {
     public void deleteCharacter(Agent a1){
         characterList.remove(a1);
     }
@@ -59,6 +75,20 @@ public class HeistPlanner {
             System.out.println("3. Change Tools ");
             System.out.println("4. Exit");
             int choice = sc.nextInt();
+            int classChoice = 0;
+            int toolChoice = 0;
+            String name = "Default";
+            Tools t2;
+            switch(choice){
+                case 1:
+                    System.out.println("Enter New Name: ");
+                    name = sc.nextLine();
+                    a1.setAgentName(name);
+                    if(a1.getUniqueSkill().equals("Injection"))  classChoice = 1;
+                    else classChoice = 2;
+                    t2 = characterList.get(a1);
+                    if(t2.getToolName().equals("Hacker's Kit")) toolChoice = 2;
+                    else toolChoice = 1;
             switch(choice){
                 case 1:
                     System.out.println("Enter New Name: ");
@@ -68,6 +98,7 @@ public class HeistPlanner {
                 case 2:
                     System.out.println("1. Hacker");
                     System.out.println("2. BruteForcer");
+                    classChoice = sc.nextInt();
                     int classChoice = sc.nextInt();
                     switch(classChoice){
                         case 1:
@@ -81,10 +112,15 @@ public class HeistPlanner {
                         default:
                             System.out.println("Invalid Choice");
                     }
+                    t2 = characterList.get(a1);
+                    if(t2.getToolName().equals("Hacker's Kit")) toolChoice = 2;
+                    else toolChoice = 1;
+                    name = a1.getAgentName();
                     break;
                 case 3:
                     System.out.println("1. Hacker's Kit");
                     System.out.println("2. Whey Protein");
+                    toolChoice = sc.nextInt();
                     int toolChoice = sc.nextInt();
                     Tools t1 = characterList.get(a1);
                     switch(toolChoice){
@@ -99,11 +135,17 @@ public class HeistPlanner {
                         default:
                             System.out.println("Invalid Choice");
                     }
+                    if(a1.getUniqueSkill().equals("Injection"))  classChoice = 1;
+                    else classChoice = 2;
+                    name = a1.getAgentName();
+                    break;
                 case 4:
                     return;
                 default:
                     System.out.println("Invalid Choice");
             }
+            SaveData data = new SaveData(name, classChoice, toolChoice);
+            data.overrideSave();
         }
     }
     public Agent displayCharacters(){
@@ -129,5 +171,36 @@ public class HeistPlanner {
         }
         System.out.println("No Character Choosen");
         return null;
+    }
+    public static void process() throws IOException {
+        List<SaveData> dataList = SaveData.loadEveryProfile();
+        SaveData data;
+        for (SaveData saveData : dataList) {
+            data = saveData;
+            String name = data.getName();
+            int agentType = data.getAgentType();
+            int toolType = data.getToolType();
+            if (agentType == 1) {
+                Agent a = new Hacker(name);
+                Tools t;
+                if (toolType == 1) {
+                    t = new Protien();
+
+                } else {
+                    t = new Kit();
+                }
+                HeistPlanner.characterList.put(a, t);
+            } else {
+                Agent a = new BruteForcer(name);
+                Tools t;
+                if (toolType == 1) {
+                    t = new Protien();
+
+                } else {
+                    t = new Kit();
+                }
+                HeistPlanner.characterList.put(a, t);
+            }
+        }
     }
 }
