@@ -1,25 +1,16 @@
 package HeistPlanner;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 
 import agents.*;
 import persistance.SaveData;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Scanner;
-
-import agents.*;
 import tools.*;
 
 public class HeistPlanner {
     Scanner sc = new Scanner(System.in);
     public static HashMap<Agent, Tools> characterList = new HashMap<>();
     public Agent createCharacter(Agent a1) throws IOException {
-    public Agent createCharacter(Agent a1){
         int charClass;
         String name;
         int toolChoice;
@@ -65,10 +56,6 @@ public class HeistPlanner {
         SaveData.delete(a1.getAgentName());
     }
     public void editCharacter(Agent a1) throws IOException {
-    public void deleteCharacter(Agent a1){
-        characterList.remove(a1);
-    }
-    public void editCharacter(Agent a1){
         while(true){
             System.out.println("1. Change Name ");
             System.out.println("2. Change Class ");
@@ -89,17 +76,11 @@ public class HeistPlanner {
                     t2 = characterList.get(a1);
                     if(t2.getToolName().equals("Hacker's Kit")) toolChoice = 2;
                     else toolChoice = 1;
-            switch(choice){
-                case 1:
-                    System.out.println("Enter New Name: ");
-                    String name = sc.nextLine();
-                    a1.setAgentName(name);
                     break;
                 case 2:
                     System.out.println("1. Hacker");
                     System.out.println("2. BruteForcer");
                     classChoice = sc.nextInt();
-                    int classChoice = sc.nextInt();
                     switch(classChoice){
                         case 1:
                             a1 = new Hacker(a1.getAgentName());
@@ -121,7 +102,6 @@ public class HeistPlanner {
                     System.out.println("1. Hacker's Kit");
                     System.out.println("2. Whey Protein");
                     toolChoice = sc.nextInt();
-                    int toolChoice = sc.nextInt();
                     Tools t1 = characterList.get(a1);
                     switch(toolChoice){
                         case 1:
@@ -148,7 +128,7 @@ public class HeistPlanner {
             data.overrideSave();
         }
     }
-    public Agent displayCharacters(){
+    public Agent displayCharacters() throws IOException {
         if(characterList.isEmpty()){
             System.out.println("No Characters Created Yet!");
             return null;
@@ -203,4 +183,40 @@ public class HeistPlanner {
             }
         }
     }
+    public static void delete() {
+        if (characterList.isEmpty()) {
+            System.out.println("No Created Characters");
+            return;
+        }
+
+        Scanner sc = new Scanner(System.in); // Ensure you have a Scanner
+        Iterator<Map.Entry<Agent, Tools>> iterator = characterList.entrySet().iterator();
+
+        while (iterator.hasNext()) {
+            Map.Entry<Agent, Tools> entry = iterator.next();
+            Agent a1 = entry.getKey();
+
+            System.out.println("Name: " + a1.getAgentName());
+            System.out.println("Agent Class: " + (a1.getUniqueSkill().equals("Injection") ? "Hacker" : "BruteForcer"));
+            System.out.println();
+
+            System.out.println("1. Delete this character");
+            System.out.println("2. Next character");
+            System.out.print("Enter your choice: ");
+            int choice = sc.nextInt();
+
+            if (choice == 1) {
+                iterator.remove(); // ✅ Safe removal
+                try {
+                    SaveData.delete(a1.getAgentName()); // ✅ Delete from save file
+                    System.out.println("Character deleted successfully.");
+                } catch (IOException e) {
+                    System.out.println("Error deleting character from save file: " + e.getMessage());
+                }
+            }
+        }
+
+        System.out.println("Character deletion process complete.");
+    }
+
 }
