@@ -6,6 +6,10 @@ import tools.*;
 import java.io.*;
 import java.util.*;
 import persistance.*;
+<<<<<<< HEAD
+import Map.BankMapBuilder;
+=======
+>>>>>>> 41e4d33c4d05e1abbe9dfda4d1d531c321348288
 
 public class Main {
     public static void main(String[] args) throws IOException {
@@ -57,6 +61,12 @@ public class Main {
 
             if (a1 == null) continue;
 
+<<<<<<< HEAD
+            BankMapBuilder map = new BankMapBuilder();
+            map.simulateTurnBasedHeist(a1);
+
+=======
+>>>>>>> 41e4d33c4d05e1abbe9dfda4d1d531c321348288
             while (true) {
                 System.out.println("\n--- In-Game Menu ---");
                 System.out.println("1. Display Character Profile");

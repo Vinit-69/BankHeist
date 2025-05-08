@@ -2,7 +2,7 @@
 Plan. Infiltrate. Simulate. Escape.
 
 BankHeist is a Java + DSA-powered simulation game where you orchestrate high-stakes digital bank heists using algorithmic strategy and object-oriented design.
-Design agents, equip tools, analyze security systems modeled as graphs, and simulate mission outcomes using classic DSA techniques like DFS, backtracking, and pathfinding.
+Design agents, equip tools, analyze Nodes systems modeled as graphs, and simulate mission outcomes using classic DSA techniques like DFS, backtracking, and pathfinding.
 
 ## 👥 Team Members
 
@@ -58,7 +58,7 @@ Pure DSA for brains of the operation
 
 🚀 How It Works
 You are the mastermind.
-Assemble agents, equip them with tools, study the security graph of the bank, and simulate the mission.
+Assemble agents, equip them with tools, study the Nodes graph of the bank, and simulate the mission.
 
 Each bank is modeled as a graph of SecurityNodes
 
@@ -85,7 +85,7 @@ BankHeist/
 ├── src/
 │   ├── agents/         # Agent classes and logic
 │   ├── tools/          # Tools and abilities
-│   ├── security/       # Security graph and node logic
+│   ├── Nodes/       # Security graph and node logic
 │   ├── engine/         # Simulation engine
 │   └── ui/             # CLI (and later, JavaFX GUI)
 ├── data/               # Sample agents/tools/plans
