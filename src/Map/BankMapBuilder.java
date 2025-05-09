@@ -2,6 +2,9 @@ package Map;
 
 import agents.Agent;
 import Nodes.*;
+import Custom.CustomHashMap; // Importing your custom hashmap
+import skills.PathfinderSkill;
+
 import java.util.Scanner;
 
 public class BankMapBuilder {
@@ -11,19 +14,33 @@ public class BankMapBuilder {
     private int playerX = 0;
     private int playerY = 0;
 
+    // Using your custom data structure here
+    private CustomHashMap<Integer, int[]> nodeCoords = new CustomHashMap<>();
+
     public BankMapBuilder() {
         buildMap();
+        System.out.println("Using CustomHashMap to store node coordinates."); // Optional debug message
     }
 
     private void buildMap() {
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < cols; j++) {
                 grid[i][j] = new NormalNode();
+                nodeCoords.put(i * cols + j, new int[]{i, j});
             }
         }
+
         grid[1][2] = new Firewall();
+        nodeCoords.put(1 * cols + 2, new int[]{1, 2});
+
         grid[2][3] = new Lasers();
+        nodeCoords.put(2 * cols + 3, new int[]{2, 3});
+
         grid[4][4] = new BankVault();
+        nodeCoords.put(4 * cols + 4, new int[]{4, 4});
+
+        grid[2][4] = new Firewall();
+        nodeCoords.put(2 * cols + 4, new int[]{2, 4});
     }
 
     private void displayMap() {
@@ -46,14 +63,20 @@ public class BankMapBuilder {
     }
 
     public void simulateTurnBasedHeist(Agent player) {
+        PathfinderSkill skill = new PathfinderSkill();
         Scanner sc = new Scanner(System.in);
         while (true) {
             System.out.println("\n--- Bank Heist Simulation ---");
             displayMap();
-            System.out.println("Move Options: 1. Up | 2. Down | 3. Left | 4. Right | 5. Exit");
+            System.out.println("Move Options: 1. Up | 2. Down | 3. Left | 4. Right | 5. Use Pathfinder Skill | 6. Exit");
             int move = sc.nextInt();
 
-            if (move == 5) break;
+            if (move == 6) break;
+
+            if (move == 5) {
+                System.out.println(skill.suggestDirection(playerX, playerY, grid));
+                continue;
+            }
 
             int newX = playerX;
             int newY = playerY;

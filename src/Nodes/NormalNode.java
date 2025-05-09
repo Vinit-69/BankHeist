@@ -1,6 +1,6 @@
 package Nodes;
 
-import java.util.Map;
+import Custom.CustomHashMap;
 
 public class NormalNode extends SecurityNodes {
     public NormalNode() {
@@ -9,8 +9,7 @@ public class NormalNode extends SecurityNodes {
     }
 
     @Override
-    public Boolean check(Map<String, Integer> map) {
-        return true;
+    public Boolean check(CustomHashMap<String, Integer> map) {
+        return true; // No condition, as this node doesn't need to check skill values
     }
 }
-

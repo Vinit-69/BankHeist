@@ -1,11 +1,13 @@
 package Nodes;
 
-import java.util.Map;
+import Custom.CustomHashMap;
 
-public abstract class SecurityNodes{
+public abstract class SecurityNodes {
     String securityName;
     int skillCheck;
-    public Boolean check(Map<String, Integer> map){
-        return false;
+
+    // Updated to use CustomHashMap
+    public Boolean check(CustomHashMap<String, Integer> map) {
+        return false; // Default behavior if not overridden by subclass
     }
 }

@@ -1,8 +1,9 @@
 package agents;
 
-public class Hacker extends Agent{
+public class Hacker extends Agent {
     String sound;
-    public Hacker(String agentName){
+
+    public Hacker(String agentName) {
         super(agentName);
         this.sound = "Synth";
         this.traits = new String[]{"Smart", "Subtle", "Finesse"};

@@ -1,12 +1,16 @@
 package tools;
-import java.util.Map;
-import agents.*;
 
-public abstract class Tools{
+import Custom.CustomHashMap;
+import agents.Agent;
+
+public abstract class Tools {
     String toolName;
     int skillIncrement;
-    public void assignTools(Agent a1){};
-    public String getToolName(){
+
+    // Updated to accept CustomHashMap
+    public void assignTools(Agent a1) {}
+
+    public String getToolName() {
         return toolName;
     }
 
@@ -14,4 +18,3 @@ public abstract class Tools{
         return skillIncrement;
     }
 }
-

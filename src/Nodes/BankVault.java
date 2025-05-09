@@ -1,6 +1,6 @@
 package Nodes;
 
-import java.util.Map;
+import Custom.CustomHashMap;
 
 public class BankVault extends SecurityNodes {
     public BankVault() {
@@ -9,8 +9,8 @@ public class BankVault extends SecurityNodes {
     }
 
     @Override
-    public Boolean check(Map<String, Integer> map) {
-        return map.getOrDefault("Stealth", 0) >= skillCheck || map.getOrDefault("Power", 0) >= skillCheck;
+    public Boolean check(CustomHashMap<String, Integer> map) {
+        // Using get method from CustomHashMap, with a default value of 0 if key is absent
+        return map.get("Stealth") >= skillCheck || map.get("Power") >= skillCheck;
     }
 }
-

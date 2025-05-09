@@ -1,8 +1,9 @@
 package agents;
 
-public class BruteForcer extends Agent{
+public class BruteForcer extends Agent {
     String sound;
-    public BruteForcer(String agentName){
+
+    public BruteForcer(String agentName) {
         super(agentName);
         this.sound = "Metal";
         this.traits = new String[]{"Relentless", "Unstoppable", "Powerful"};

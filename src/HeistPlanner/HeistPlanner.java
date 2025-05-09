@@ -206,9 +206,9 @@ public class HeistPlanner {
             int choice = sc.nextInt();
 
             if (choice == 1) {
-                iterator.remove(); // ✅ Safe removal
+                iterator.remove();
                 try {
-                    SaveData.delete(a1.getAgentName()); // ✅ Delete from save file
+                    SaveData.delete(a1.getAgentName()); 
                     System.out.println("Character deleted successfully.");
                 } catch (IOException e) {
                     System.out.println("Error deleting character from save file: " + e.getMessage());
