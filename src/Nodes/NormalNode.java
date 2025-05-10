@@ -10,6 +10,6 @@ public class NormalNode extends SecurityNodes {
 
     @Override
     public Boolean check(CustomHashMap<String, Integer> map) {
-        return true; // No condition, as this node doesn't need to check skill values
+        return true;
     }
 }

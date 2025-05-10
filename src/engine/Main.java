@@ -14,7 +14,6 @@ public class Main {
         HeistPlanner planA = new HeistPlanner();
         Agent a1 = null;
 
-        // Load existing characters (or data initialization logic)
         try {
             HeistPlanner.process();
         } catch (IOException e) {
@@ -42,7 +41,7 @@ public class Main {
                 System.out.println("4. Back to Main Menu");
                 System.out.print("Enter your choice: ");
                 choice = sc.nextInt();
-                sc.nextLine(); // Consume newline
+                sc.nextLine();
 
                 if (choice == 1) {
                     try {

@@ -31,7 +31,7 @@ public class PathfinderSkill {
             int cy = current[1];
 
             if (grid[cx][cy] instanceof BankVault) {
-                // Backtrack to find the first step
+
                 String key = cx + "," + cy;
                 while (pathMap.containsKey(key) && !pathMap.get(key).equals(startX + "," + startY)) {
                     key = pathMap.get(key);

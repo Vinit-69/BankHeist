@@ -10,7 +10,7 @@ public class BankVault extends SecurityNodes {
 
     @Override
     public Boolean check(CustomHashMap<String, Integer> map) {
-        // Using get method from CustomHashMap, with a default value of 0 if key is absent
+
         return map.get("Stealth") >= skillCheck || map.get("Power") >= skillCheck;
     }
 }

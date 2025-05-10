@@ -7,7 +7,7 @@ public abstract class Tools {
     String toolName;
     int skillIncrement;
 
-    // Updated to accept CustomHashMap
+
     public void assignTools(Agent a1) {}
 
     public String getToolName() {

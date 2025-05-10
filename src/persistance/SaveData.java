@@ -10,14 +10,13 @@ public class SaveData {
     private int agentType;
     private int toolType;
 
-    // Constructor
     public SaveData(String name, int agentType, int toolType) {
         this.name = name;
         this.agentType = agentType;
         this.toolType = toolType;
     }
 
-    // Getters and Setters
+
     public String getName() {
         return name;
     }
@@ -42,14 +41,12 @@ public class SaveData {
         this.toolType = toolType;
     }
 
-    // Save the data to a file
+
     public void save() throws IOException {
         try (FileWriter fw = new FileWriter("data/savefile.txt", true)) {
             fw.write(name + "," + agentType + "," + toolType + "\n");
         }
     }
-
-    // Override existing save file data
     public void overrideSave() throws IOException {
         File inputFile = new File("data/savefile.txt");
         File tempFile = new File("data/tempfile.txt");
@@ -78,7 +75,6 @@ public class SaveData {
         tempFile.renameTo(inputFile);
     }
 
-    // Delete a save entry
     public static void delete(String name) throws IOException {
         File inputFile = new File("data/savefile.txt");
         File tempFile = new File("data/tempfile.txt");
@@ -98,7 +94,6 @@ public class SaveData {
         tempFile.renameTo(inputFile);
     }
 
-    // Load the most recent save from the file
     public static SaveData loadFromFile() throws IOException {
         try (BufferedReader br = new BufferedReader(new FileReader("data/savefile.txt"))) {
             String line = br.readLine();
@@ -119,7 +114,6 @@ public class SaveData {
         }
     }
 
-    // Load all profiles from the save file
     public static List<SaveData> loadEveryProfile() throws IOException {
         List<SaveData> profiles = new ArrayList<>();
 
@@ -141,18 +135,16 @@ public class SaveData {
         return profiles;
     }
 
-    // Additional helper method to load agent stats into CustomHashMap (if required in your context)
     public static CustomHashMap<String, Integer> loadAgentStatsFromSave(String name) throws IOException {
         List<SaveData> profiles = loadEveryProfile();
         for (SaveData profile : profiles) {
             if (profile.getName().equals(name)) {
-                // Here, you could load agent stats based on `profile.getAgentType()`
                 CustomHashMap<String, Integer> agentStats = new CustomHashMap<>();
-                agentStats.put("Stealth", 10); // Example, you can adjust based on actual logic
+                agentStats.put("Stealth", 10);
                 agentStats.put("Power", 5);
                 return agentStats;
             }
         }
-        return null; // Return null if not found
+        return null;
     }
 }
