@@ -8,6 +8,7 @@ public class Enemy {
     private int y;
     private int targetX;
     private int targetY;
+    private boolean active = true;  // Enemy stops if game is won or paused
 
     public Enemy(int startX, int startY) {
         this.x = startX;
@@ -19,29 +20,49 @@ public class Enemy {
         this.targetY = targetY;
     }
 
+    public void deactivate() {
+        this.active = false;
+    }
+
+    public void activate() {
+        this.active = true;
+    }
+
     public void move(SecurityNodes[][] grid) {
+        if (!active) return;
 
-        int newX = x;
-        int newY = y;
+        int dx = Integer.compare(targetX, x); // -1, 0, or 1
+        int dy = Integer.compare(targetY, y);
 
-        if (x < targetX) newX++;
-        else if (x > targetX) newX--;
+        int newX = x + dx;
+        int newY = y + dy;
 
-        if (y < targetY) newY++;
-        else if (y > targetY) newY--;
+        // Preferred move (diagonal-style: prioritize both if clear)
+        if (isValidMove(grid, newX, newY)) {
+            x = newX;
+            y = newY;
+            return;
+        }
 
-        if (newX >= 0 && newY >= 0 && newX < grid.length && newY < grid[0].length) {
-
-            if (!(grid[newX][newY] instanceof WallNode)) {
-                x = newX;
-                y = newY;
-            } else {
-
-                System.out.println("Enemy cannot move through the wall at (" + newX + ", " + newY + ")");
-            }
+        // Try alternate directions (x then y)
+        if (dx != 0 && isValidMove(grid, x + dx, y)) {
+            x += dx;
+        } else if (dy != 0 && isValidMove(grid, x, y + dy)) {
+            y += dy;
+        } else {
+            // Fully blocked - try orthogonal backup
+            if (isValidMove(grid, x + 1, y)) x++;
+            else if (isValidMove(grid, x - 1, y)) x--;
+            else if (isValidMove(grid, x, y + 1)) y++;
+            else if (isValidMove(grid, x, y - 1)) y--;
         }
     }
 
+    private boolean isValidMove(SecurityNodes[][] grid, int x, int y) {
+        return x >= 0 && y >= 0 &&
+                x < grid.length && y < grid[0].length &&
+                !(grid[x][y] instanceof WallNode);
+    }
 
     public boolean isAtPlayer(int playerX, int playerY) {
         return x == playerX && y == playerY;
@@ -51,11 +72,6 @@ public class Enemy {
         System.out.println("Enemy is at (" + x + ", " + y + ")");
     }
 
-    public int getX() {
-        return x;
-    }
-
-    public int getY() {
-        return y;
-    }
+    public int getX() { return x; }
+    public int getY() { return y; }
 }

@@ -1,8 +1,10 @@
 package skills;
 
-import Nodes.*;
-
-import java.util.*;
+import Nodes.BankVault;
+import Nodes.SecurityNodes;
+import Nodes.WallNode;
+import java.util.LinkedList;
+import java.util.Queue;
 
 public class PathfinderSkill {
     private int uses = 0;
@@ -10,65 +12,60 @@ public class PathfinderSkill {
 
     public String suggestDirection(int startX, int startY, SecurityNodes[][] grid) {
         if (uses >= maxUses) {
-            return "Pathfinder skill exhausted. (3/3 uses)";
+            return "Skill exhausted (F)";
         }
 
         int rows = grid.length;
         int cols = grid[0].length;
         boolean[][] visited = new boolean[rows][cols];
-        int[][] directions = {{-1, 0}, {1, 0}, {0, -1}, {0, 1}};
-        String[] dirNames = {"Up", "Down", "Left", "Right"};
+        int[][] directions = {{-1,0},{1,0},{0,-1},{0,1}};
+        String[] dirNames = {"Up","Down","Left","Right"};
 
         Queue<int[]> queue = new LinkedList<>();
-        Map<String, String> pathMap = new HashMap<>();
-
         queue.add(new int[]{startX, startY});
         visited[startX][startY] = true;
 
         while (!queue.isEmpty()) {
             int[] current = queue.poll();
-            int cx = current[0];
-            int cy = current[1];
+            int x = current[0], y = current[1];
 
-            if (grid[cx][cy] instanceof BankVault) {
-
-                String key = cx + "," + cy;
-                while (pathMap.containsKey(key) && !pathMap.get(key).equals(startX + "," + startY)) {
-                    key = pathMap.get(key);
-                }
-                String[] parts = key.split(",");
-                int nextX = Integer.parseInt(parts[0]);
-                int nextY = Integer.parseInt(parts[1]);
-
-                String direction = getDirection(startX, startY, nextX, nextY);
+            // Found vault
+            if (grid[x][y] instanceof BankVault) {
                 uses++;
-                return "Suggested move: " + direction + " (" + uses + "/" + maxUses + " uses)";
+                return "Go " + findInitialDirection(startX, startY, x, y) +
+                        " (" + uses + "/" + maxUses + " uses)";
             }
 
-            for (int d = 0; d < 4; d++) {
-                int nx = cx + directions[d][0];
-                int ny = cy + directions[d][1];
+            // Explore neighbors
+            for (int i = 0; i < 4; i++) {
+                int nx = x + directions[i][0];
+                int ny = y + directions[i][1];
 
-                if (nx >= 0 && ny >= 0 && nx < rows && ny < cols && !visited[nx][ny]) {
+                if (nx >= 0 && ny >= 0 && nx < rows && ny < cols &&
+                        !visited[nx][ny] && !(grid[nx][ny] instanceof WallNode)) {
                     visited[nx][ny] = true;
                     queue.add(new int[]{nx, ny});
-                    pathMap.put(nx + "," + ny, cx + "," + cy);
                 }
             }
         }
 
-        return "No path to vault found.";
+        uses++;
+        return "No path found (" + uses + "/" + maxUses + " uses)";
     }
 
-    private String getDirection(int x1, int y1, int x2, int y2) {
-        if (x2 == x1 - 1 && y2 == y1) return "Up";
-        if (x2 == x1 + 1 && y2 == y1) return "Down";
-        if (x2 == x1 && y2 == y1 - 1) return "Left";
-        if (x2 == x1 && y2 == y1 + 1) return "Right";
+    private String findInitialDirection(int startX, int startY, int targetX, int targetY) {
+        if (targetX < startX) return "Up";
+        if (targetX > startX) return "Down";
+        if (targetY < startY) return "Left";
+        if (targetY > startY) return "Right";
         return "Stay";
     }
 
     public boolean isExhausted() {
         return uses >= maxUses;
+    }
+
+    public int getUses() {
+        return uses;
     }
 }

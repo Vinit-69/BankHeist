@@ -29,7 +29,6 @@ public class LasersMinigameGUI {
         Scene scene = new Scene(layout, 350, 150);
         dialog.setScene(scene);
         dialog.show();
-
         int delayMillis = 2000 + (int) (Math.random() * 3000);
         PauseTransition wait = new PauseTransition(Duration.millis(delayMillis));
         wait.setOnFinished(e -> {

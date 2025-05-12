@@ -77,7 +77,6 @@ public class Main {
 
             if (a1 == null) continue;
 
-            // Heist Simulation
             BankMapBuilder map = new BankMapBuilder();
             map.simulateTurnBasedHeist(a1);
 
